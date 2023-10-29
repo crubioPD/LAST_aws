@@ -1,6 +1,5 @@
 import boto3
 import pandas as pd
-import io
 
 s3 = boto3.client('s3')
 
@@ -14,9 +13,7 @@ data = response["Body"]
 df = pd.read_csv(data)
 
 # Process the data here
-
-df = df.head()
-df_results = df.groupby(["work_year", "job_title"]).agg({"salary_in_usd": "mean", "remote_ratio": "mean", "company_size": "max"}).reset_index()
+df_results = df.groupby(["work_year", "job_title"]).agg({"salary_in_usd": "mean", "remote_ratio": "mean"}).reset_index()
 
 # Save the processed DataFrame as a CSV to a BytesIO object
 result_data = df_results.to_csv(index=False)
